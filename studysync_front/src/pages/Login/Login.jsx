@@ -13,7 +13,7 @@ import ButtonCont from "../../components/ButtonCont/ButtonCont.jsx";           /
 import { LoginFormStack, FooterText, FooterLink } from "./Login.style.js";
 
 // ========== MAIN LOGIN COMPONENT ==========
-export default function Login() {
+export default function Login({ onLoginSuccess }) {
     // ========== STATE MANAGEMENT ==========
     // Form state - stores email and password input values
     const [form, setForm] = useState({ email: "", password: "" });
@@ -31,6 +31,16 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent page reload
         console.log("Login data:", form); // Log form data (replace with actual login logic)
+        
+        // ========== LOGIN VALIDATION ==========
+        // Basic validation - check if fields are filled
+        if (form.email && form.password) {
+            // Simulate successful login (replace with actual authentication logic)
+            console.log("Login successful! Navigating to HomePage...");
+            onLoginSuccess(); // Navigate to HomePage
+        } else {
+            alert("Please fill in both email and password");
+        }
     };
 
     // ========== COMPONENT RENDER ==========
@@ -64,7 +74,7 @@ export default function Login() {
             {/* Footer section with signup link */}
             <FooterText>
                 Don't have an account?
-                <FooterLink component="span" onClick={() => console.log("Signup clicked")}>
+                <FooterLink component="span" onClick={() => alert("Signup functionality coming soon!")}>
                     Signup Here
                 </FooterLink>
             </FooterText>
