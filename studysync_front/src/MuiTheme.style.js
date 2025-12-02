@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const Theme = createTheme({
     typography: {
-        fontFamily: '"Oxanium", sans-serif',
+        fontFamily: '"Rubik", sans-serif',
     },
     palette: {
         primary: {
