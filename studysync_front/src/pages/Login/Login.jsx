@@ -65,6 +65,7 @@ export default function Login({ onLoginSuccess }) {
                     inputName="password"
                     inputValue={form.password}
                     handleIChange={handleIChange}
+                    type="password"
                 />
 
                 {/* Login submit button */}

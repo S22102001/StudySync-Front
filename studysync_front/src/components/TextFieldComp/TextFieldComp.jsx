@@ -1,6 +1,6 @@
 import { StyledTextField } from "./TextFieldComp.style";
 
-const TextFieldComp = ({ inputLabel, inputValue, handleIChange, inputName }) => {
+const TextFieldComp = ({ inputLabel, inputValue, handleIChange, inputName, type = "text" }) => {
   return (
     <StyledTextField
       variant="filled"
@@ -9,6 +9,7 @@ const TextFieldComp = ({ inputLabel, inputValue, handleIChange, inputName }) => 
       value={inputValue}
       onChange={handleIChange}
       name={inputName}
+      type={type}
     />
   );
 };
