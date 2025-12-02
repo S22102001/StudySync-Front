@@ -8,7 +8,7 @@ export const ContainerWrapper = styled(Box)(({ theme }) => ({
     display: "flex",
     alignItems: "center",                // vertical center
     justifyContent: "center",            // horizontal center
-    backgroundColor: theme.palette.background.default, // page bg (light blue)
+    // backgroundColor: theme.palette.background.default, // page bg (light blue)
 }));
 
 // The white "card" that holds the login form
@@ -17,7 +17,7 @@ export const FormCard = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(5),           // inner padding
     borderRadius: 24,
     textAlign: "center",
-    backgroundColor: theme.palette.background.default,   // card bg
+    backgroundColor: "#E0EAFC",  // card bg
     boxShadow: "0px 10px 30px rgba(15, 23, 42, 0.15)", // subtle card shadow
 }));
 

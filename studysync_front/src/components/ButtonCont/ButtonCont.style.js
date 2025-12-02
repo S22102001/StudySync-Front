@@ -15,6 +15,7 @@ export const PrimaryButton = styled(Button)(({ theme }) => ({
 
   "&:hover": {
     border: `1px solid ${theme.palette.primary.main}`,
+    backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.main,
     boxShadow: "0px 6px 16px rgba(15, 23, 42, 0.35)",
   },
