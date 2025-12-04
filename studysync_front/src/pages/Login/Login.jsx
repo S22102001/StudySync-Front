@@ -1,84 +1,127 @@
-// src/pages/Login/Login.jsx - Main login page component
+// src/pages/Login/Login.jsx
 
 // ========== IMPORTS ==========
-// React hooks for state management
 import { useState } from "react";
 
-// Custom reusable components
-import FormContainer from "../../components/FormContainer/FormContainer.jsx"; // Wrapper with title, background, and card styling
-import TextFieldComp from "../../components/TextFieldComp/TextFieldComp.jsx";   // Styled input fields
-import ButtonCont from "../../components/ButtonCont/ButtonCont.jsx";           // Styled login button
+import FormContainer from "../../components/FormContainer/FormContainer.jsx";
+import TextFieldComp from "../../components/TextFieldComp/TextFieldComp.jsx";
+import ButtonCont from "../../components/ButtonCont/ButtonCont.jsx";
 
-// Styled components specific to this login page
 import { LoginFormStack, FooterText, FooterLink } from "./Login.style.js";
 
 // ========== MAIN LOGIN COMPONENT ==========
 export default function Login({ onLoginSuccess }) {
-    // ========== STATE MANAGEMENT ==========
-    // Form state - stores email and password input values
-    const [form, setForm] = useState({ email: "", password: "" });
 
-    // ========== EVENT HANDLERS ==========
-    // Handles input field changes - updates form state when user types
-    const handleIChange = (e) => {
-        setForm((prev) => ({
-            ...prev, // Keep existing form data
-            [e.target.name]: e.target.value, // Update only the changed field
-        }));
-    };
+  // ========== FORM & ERROR STATE ==========
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-    // Handles form submission - processes login when user clicks Login button
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent page reload
-        console.log("Login data:", form); // Log form data (replace with actual login logic)
-        
-        // ========== LOGIN VALIDATION ==========
-        // Basic validation - check if fields are filled
-        if (form.email && form.password) {
-            // Simulate successful login (replace with actual authentication logic)
-            console.log("Login successful! Navigating to HomePage...");
-            onLoginSuccess(); // Navigate to HomePage
-        } else {
-            alert("Please fill in both email and password");
-        }
-    };
+  const [errors, setErrors] = useState({}); // Stores validation errors for each field
 
-    // ========== COMPONENT RENDER ==========
-    return (
-        // Main container with StudySync title and Sign-in subtitle
-        <FormContainer title="StudySync" subtitle="Sign-in">
-            
-            {/* Form wrapper with spacing and submit handling */}
-            <LoginFormStack spacing={3} component="form" onSubmit={handleSubmit}>
-                
-                {/* Email input field */}
-                <TextFieldComp
-                    inputLabel="Email"
-                    inputName="email"
-                    inputValue={form.email}
-                    handleIChange={handleIChange}
-                />
+  // ========== INPUT CHANGE HANDLER ==========
+  const handleIChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value, // Update only the changed field
+    }));
+  };
 
-                {/* Password input field */}
-                <TextFieldComp
-                    inputLabel="Password"
-                    inputName="password"
-                    inputValue={form.password}
-                    handleIChange={handleIChange}
-                    type="password"
-                />
+  // ========== VALIDATION FUNCTION ==========
+  const validate = () => {
+    const newErrors = {};
 
-                {/* Login submit button */}
-                <ButtonCont text="Login" onClick={handleSubmit} />
-            </LoginFormStack>
+    // Username validation
+    if (!form.username.trim()) {
+      newErrors.username = "Username is required";
+    } else if (form.username.trim().length < 3) {
+      newErrors.username = "Username must be at least 3 characters";
+    }
 
-            {/* Footer section with signup link */}
-            <FooterText>
-                Don't have an account?
-                <FooterLink component="span" onClick={() => alert("Signup functionality coming soon!")}>
-                    Signup Here
-                </FooterLink>
-            </FooterText>
-        </FormContainer>
-    );
+    // Email validation
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      newErrors.email = "Email must be a valid email address";
+    }
+
+    // Password validation
+    if (!form.password) {
+      newErrors.password = "Password is required";
+    } else if (form.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
+  // ========== SUBMIT HANDLER ==========
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const isValid = validate();
+    if (!isValid) return; // Stop if validation failed
+
+    // If validation passed:
+    console.log("Login data:", form);
+    console.log("Login successful! Navigating to HomePage...");
+    onLoginSuccess();
+  };
+
+  // ========== RENDER ==========
+  return (
+    <FormContainer title="StudySync" subtitle="Sign-in">
+      <LoginFormStack spacing={3} component="form" onSubmit={handleSubmit}>
+
+        {/* Username Field */}
+        <TextFieldComp
+          inputLabel="Username"
+          inputName="username"
+          inputValue={form.username}
+          handleIChange={handleIChange}
+          error={!!errors.username}
+          helperText={errors.username}
+        />
+
+        {/* Email Field */}
+        <TextFieldComp
+          inputLabel="Email"
+          inputName="email"
+          inputValue={form.email}
+          handleIChange={handleIChange}
+          error={!!errors.email}
+          helperText={errors.email}
+        />
+
+        {/* Password Field */}
+        <TextFieldComp
+          inputLabel="Password"
+          inputName="password"
+          inputValue={form.password}
+          handleIChange={handleIChange}
+          type="password"
+          error={!!errors.password}
+          helperText={errors.password}
+        />
+
+        {/* Submit Button */}
+        <ButtonCont text="Login" type="submit" />
+      </LoginFormStack>
+
+      {/* Footer (Signup link) */}
+      <FooterText>
+        Don't have an account?
+        <FooterLink
+          component="span"
+          onClick={() => alert("Signup functionality coming soon!")}
+        >
+          Signup Here
+        </FooterLink>
+      </FooterText>
+    </FormContainer>
+  );
 }
